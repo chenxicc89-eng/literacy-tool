@@ -317,16 +317,6 @@ ${todayWords
           )}
         </div>
       </div>
-
-      {/* 底部主操作 */}
-      <div className="fixed bottom-4 left-4 right-4 z-50 md:hidden">
-        <a
-          href="/landing"
-          className="block rounded-full bg-black px-6 py-4 text-center text-sm font-medium text-white shadow-lg"
-        >
-          👉 预览引流页
-        </a>
-      </div>
     </div>
   );
 }

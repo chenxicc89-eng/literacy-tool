@@ -166,7 +166,7 @@ export default function SharePosterCard({
           <div>
             <h2 className="text-xl font-semibold text-gray-900">今日识字分享卡</h2>
             <p className="mt-2 text-sm leading-6 text-gray-600">
-              这一块更适合截图、导出和发小红书，不用放太多解释。
+              保存图片，可以直接发小红书记录今天的识字过程。
             </p>
           </div>
 
