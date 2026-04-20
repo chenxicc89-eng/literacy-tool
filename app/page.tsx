@@ -6,6 +6,8 @@ import WordCard from "@/components/WordCard";
 import ChildProfile from "@/components/ChildProfile";
 import DailyScriptCard from "@/components/DailyScriptCard";
 import SharePosterCard from "@/components/SharePosterCard";
+import TodayWordCarousel from "@/components/TodayWordCarousel";
+import AppHeader from "@/components/AppHeader";
 import { scenes } from "@/lib/words";
 
 const KNOWN_WORDS_STORAGE_KEY = "literacy-tool-known-words";
@@ -21,7 +23,7 @@ type ChildProfileData = {
 };
 
 export default function Page() {
-  const [scene, setScene] = React.useState<string>("吃饭");
+  const [scene, setScene] = React.useState<string>("恐龙");
   const [knownWords, setKnownWords] = React.useState<string[]>([]);
   const [showOnlyUnknown, setShowOnlyUnknown] = React.useState(false);
   const [sceneRotationIndex, setSceneRotationIndex] = React.useState<SceneRotationMap>({});
@@ -65,7 +67,6 @@ export default function Page() {
 
   React.useEffect(() => {
     if (!hasMounted) return;
-
     try {
       localStorage.setItem(KNOWN_WORDS_STORAGE_KEY, JSON.stringify(knownWords));
     } catch (error) {
@@ -75,7 +76,6 @@ export default function Page() {
 
   React.useEffect(() => {
     if (!hasMounted) return;
-
     try {
       localStorage.setItem(
         SCENE_ROTATION_STORAGE_KEY,
@@ -88,7 +88,6 @@ export default function Page() {
 
   React.useEffect(() => {
     if (!hasMounted) return;
-
     try {
       localStorage.setItem(
         CHILD_PROFILE_STORAGE_KEY,
@@ -140,12 +139,6 @@ export default function Page() {
     );
   };
 
-  const resetKnownWords = () => {
-    const confirmed = window.confirm("确定要清空所有已掌握记录吗？");
-    if (!confirmed) return;
-    setKnownWords([]);
-  };
-
   const refreshTodayWords = () => {
     const unknownWords = currentWords.filter((word) => !knownWords.includes(word.text));
     if (unknownWords.length <= 1) return;
@@ -154,6 +147,12 @@ export default function Page() {
       ...prev,
       [scene]: ((prev[scene] ?? 0) + 1) % unknownWords.length,
     }));
+  };
+
+  const resetKnownWords = () => {
+    const confirmed = window.confirm("确定要清空所有已掌握记录吗？");
+    if (!confirmed) return;
+    setKnownWords([]);
   };
 
   const resetRotation = () => {
@@ -175,7 +174,7 @@ export default function Page() {
 
     const content =
       todayWords.length > 0
-        ? `今日识字话术卡
+        ? `今日识字话术
 孩子：${safeName}
 年龄：${safeAge}
 场景：${scene}
@@ -183,15 +182,14 @@ export default function Page() {
 ${todayWords
   .map(
     (word, index) =>
-      `${index + 1}. 带字：${word.text}
+      `${index + 1}. 字：${word.text}
 话术：${word.sentence}
 提醒：${word.tips}`
   )
   .join("\n\n")}
 
-使用原则：
-今天只顺手带 1–2 个字，不测试、不要求重复读、不做成任务。`
-        : `今日识字话术卡
+今天只顺手带 1–2 个字，不测试、不追问。`
+        : `今日识字话术
 孩子：${safeName}
 年龄：${safeAge}
 场景：${scene}
@@ -200,7 +198,7 @@ ${todayWords
 
     try {
       await navigator.clipboard.writeText(content);
-      alert("已复制今日话术文案");
+      alert("已复制今日话术");
     } catch (error) {
       console.error("复制失败：", error);
       alert("复制失败，请手动复制");
@@ -220,50 +218,21 @@ ${todayWords
   const greetingInterest = childInterest.trim() || "兴趣主题";
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-6 rounded-2xl bg-white p-6 shadow-sm">
-          <h1 className="text-3xl font-bold text-gray-900">识字小工具（MVP）</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            给 {greetingName} 用的轻量识字助手 · {greetingAge} · 当前兴趣：{greetingInterest}
-          </p>
+    <div className="min-h-screen bg-[#f6f7f9] pb-24">
+      <div className="mx-auto max-w-5xl px-4 py-4 md:px-6 md:py-6">
+        {/* App Header */}
+        <AppHeader
+          childName={childName}
+          childAge={childAge}
+          childInterest={childInterest}
+          knownCount={knownWords.length}
+          onResetProfile={resetProfile}
+          onResetKnown={resetKnownWords}
+          onResetRotation={resetRotation}
+        />
 
-          <div className="mt-4 flex flex-wrap gap-3">
-            <div className="rounded-full bg-gray-100 px-4 py-2 text-sm text-gray-700">
-              已标记会了：{knownWords.length} 个字
-            </div>
-
-            <button
-              onClick={() => setShowOnlyUnknown((prev) => !prev)}
-              className="rounded-full border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              {showOnlyUnknown ? "显示全部字" : "只看未掌握"}
-            </button>
-
-            <button
-              onClick={resetKnownWords}
-              className="rounded-full border border-red-200 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-            >
-              清空记录
-            </button>
-
-            <button
-              onClick={resetRotation}
-              className="rounded-full border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              重置推荐顺序
-            </button>
-
-            <button
-              onClick={resetProfile}
-              className="rounded-full border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              重置孩子档案
-            </button>
-          </div>
-        </div>
-
-        <div className="mb-6">
+        {/* 孩子档案 */}
+        <div className="mt-6">
           <ChildProfile
             childName={childName}
             childAge={childAge}
@@ -274,7 +243,28 @@ ${todayWords
           />
         </div>
 
-        <div className="mb-6 space-y-6">
+        {/* 场景切换 */}
+        <div className="mt-6">
+          <SceneTabs
+            sceneNames={sceneNames}
+            currentScene={scene}
+            icons={sceneIcons}
+            counts={sceneCounts}
+            onChange={setScene}
+          />
+        </div>
+
+        {/* 今日推荐轮播 */}
+        <div className="mt-6">
+          <TodayWordCarousel
+            scene={scene}
+            words={todayWords}
+            onRefresh={refreshTodayWords}
+          />
+        </div>
+
+        {/* 今日这样说 */}
+        <div className="mt-6">
           <DailyScriptCard
             childName={childName}
             childAge={childAge}
@@ -282,7 +272,10 @@ ${todayWords
             todayWords={todayWords}
             onCopy={handleCopyScript}
           />
+        </div>
 
+        {/* 分享卡 */}
+        <div className="mt-6">
           <SharePosterCard
             childName={childName}
             childAge={childAge}
@@ -293,82 +286,46 @@ ${todayWords
           />
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
-          <SceneTabs
-            sceneNames={sceneNames}
-            currentScene={scene}
-            icons={sceneIcons}
-            counts={sceneCounts}
-            onChange={setScene}
-          />
-
-          <div className="space-y-6">
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900">
-                    今日推荐 · {scene}
-                  </h2>
-                  <p className="mt-2 text-sm text-gray-600">
-                    更适合 {greetingName} 现在这个阶段的轻量推荐，一次 1–2 个字就够。
-                  </p>
-                </div>
-
-                <button
-                  onClick={refreshTodayWords}
-                  className="rounded-full border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  换一组推荐
-                </button>
-              </div>
-
-              <div className="mt-4 grid gap-4 md:grid-cols-2">
-                {todayWords.length > 0 ? (
-                  todayWords.map((word) => (
-                    <div key={word.text} className="rounded-xl bg-gray-50 p-4">
-                      <div className="text-3xl font-bold text-gray-900">
-                        {word.text}
-                      </div>
-                      <div className="mt-2 text-sm text-gray-700">
-                        {word.sentence}
-                      </div>
-                      <div className="mt-2 text-xs text-gray-500">
-                        {word.tips}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rounded-xl bg-gray-50 p-4 text-sm text-gray-600">
-                    这个场景里的字已经都标记过啦，可以换个场景继续。
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-xl font-semibold text-gray-900">
+        {/* 字卡列表 */}
+        <div className="mt-6 rounded-[28px] bg-white p-5 shadow-sm md:p-6">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">
                 全部字卡 · {scene}
               </h2>
-
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {visibleWords.map((word) => (
-                  <WordCard
-                    key={word.text}
-                    word={word}
-                    isKnown={knownWords.includes(word.text)}
-                    onToggleKnown={toggleKnown}
-                  />
-                ))}
-              </div>
-
-              {visibleWords.length === 0 && (
-                <div className="mt-4 rounded-xl bg-gray-50 p-4 text-sm text-gray-600">
-                  当前场景下未掌握的字已经没有了。
-                </div>
-              )}
+              <p className="mt-2 text-sm leading-6 text-gray-600">
+                这里更像字库，适合你快速切场景和标记已掌握。
+              </p>
             </div>
           </div>
+
+          <div className="mt-5 grid gap-4">
+            {visibleWords.map((word) => (
+              <WordCard
+                key={word.text}
+                word={word}
+                isKnown={knownWords.includes(word.text)}
+                onToggleKnown={toggleKnown}
+              />
+            ))}
+          </div>
+
+          {visibleWords.length === 0 && (
+            <div className="mt-4 rounded-2xl bg-gray-50 p-5 text-sm leading-6 text-gray-600">
+              当前场景下未掌握的字已经没有了。
+            </div>
+          )}
         </div>
+      </div>
+
+      {/* 底部主操作 */}
+      <div className="fixed bottom-4 left-4 right-4 z-50 md:hidden">
+        <a
+          href="/landing"
+          className="block rounded-full bg-black px-6 py-4 text-center text-sm font-medium text-white shadow-lg"
+        >
+          👉 预览引流页
+        </a>
       </div>
     </div>
   );

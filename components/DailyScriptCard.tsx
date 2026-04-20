@@ -19,66 +19,76 @@ export default function DailyScriptCard({
   const safeAge = childAge.trim() || "当前阶段";
 
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 p-6 shadow-sm border border-orange-100">
+    <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm md:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <div className="text-sm font-medium text-orange-600">家长今日话术卡</div>
-          <h2 className="mt-2 text-2xl font-bold text-gray-900">
-            {safeName} 的识字小卡片
+          <div className="text-sm font-medium text-gray-500">今日可直接照着用</div>
+          <h2 className="mt-2 text-2xl font-bold leading-tight text-gray-900 md:text-3xl">
+            今天你可以这样说
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            {safeAge} · 当前场景：{scene}
+          <p className="mt-2 text-sm leading-6 text-gray-600 md:text-base">
+            {safeName} · {safeAge} · {scene}场景
           </p>
         </div>
 
         <button
           onClick={onCopy}
-          className="rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-700 border border-gray-200 hover:bg-gray-50"
+          className="rounded-full border border-gray-200 bg-gray-50 px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100"
         >
-          复制话术文案
+          复制今日话术
         </button>
       </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        {todayWords.length > 0 ? (
-          todayWords.map((word, index) => (
-            <div
-              key={word.text + index}
-              className="rounded-2xl bg-white/80 p-5 border border-white shadow-sm"
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-4xl font-bold text-gray-900">{word.text}</div>
-                <div className="rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-700">
-                  今日带字
-                </div>
-              </div>
+      <div className="mt-6 rounded-2xl bg-gray-50 p-4">
+        <div className="text-sm font-medium text-gray-500">今天只带这 1–2 个字</div>
 
-              <div className="mt-4">
-                <div className="text-xs font-medium text-gray-500">自然话术</div>
-                <div className="mt-1 text-base text-gray-800 leading-7">
-                  {word.sentence}
+        <div className="mt-4 flex flex-wrap gap-3">
+          {todayWords.length > 0 ? (
+            todayWords.map((word) => (
+              <div
+                key={word.text}
+                className="rounded-2xl bg-white px-5 py-4 shadow-sm"
+              >
+                <div className="text-4xl font-bold leading-none text-gray-900">
+                  {word.text}
                 </div>
               </div>
-
-              <div className="mt-4">
-                <div className="text-xs font-medium text-gray-500">小提醒</div>
-                <div className="mt-1 text-sm text-gray-600 leading-6">
-                  {word.tips}
-                </div>
-              </div>
+            ))
+          ) : (
+            <div className="text-sm leading-6 text-gray-600">
+              这个场景里的字已经都标记过啦，可以换个场景继续。
             </div>
-          ))
-        ) : (
-          <div className="rounded-2xl bg-white/80 p-5 border border-white text-sm text-gray-600">
-            当前场景的字已经都标记过啦，可以换个场景继续。
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      <div className="mt-6 rounded-2xl bg-white/70 p-4 border border-white">
-        <div className="text-xs font-medium text-gray-500">使用原则</div>
-        <div className="mt-2 text-sm leading-6 text-gray-700">
-          今天只顺手带 1–2 个字，不测试、不要求重复读、不做成任务。只要在自然场景里说出来，就已经很好了。
+      {todayWords.length > 0 && (
+        <div className="mt-5 space-y-3">
+          {todayWords.map((word, index) => (
+            <div
+              key={word.text + index}
+              className="rounded-2xl border border-gray-200 p-4"
+            >
+              <div className="text-xs font-medium tracking-wide text-gray-400">
+                你可以这样说
+              </div>
+              <div className="mt-2 text-lg leading-8 text-gray-900">
+                {word.sentence}
+              </div>
+              <div className="mt-3 text-sm leading-6 text-gray-500">
+                {word.tips}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="mt-5 rounded-2xl bg-amber-50 p-4">
+        <div className="text-xs font-medium tracking-wide text-amber-700">
+          今天的原则
+        </div>
+        <div className="mt-2 text-sm leading-7 text-gray-700 md:text-base">
+          说出来就结束，不测试，不追问，不要求孩子重复读。
         </div>
       </div>
     </div>

@@ -4,57 +4,90 @@ export type WordItem = {
   tips: string;
 };
 
-export type SceneMap = Record<
-  string,
-  {
-    icon: string;
-    words: WordItem[];
-  }
->;
+export type Scene = {
+  icon: string;
+  words: WordItem[];
+};
 
-export const scenes: SceneMap = {
+export const scenes: Record<string, Scene> = {
+  日常: {
+    icon: "🏠",
+    words: [
+      { text: "走", sentence: "我们走吧", tips: "高频生活词" },
+      { text: "来", sentence: "你过来", tips: "简单重复" },
+      { text: "看", sentence: "你看这个", tips: "配手势" },
+      { text: "拿", sentence: "帮我拿一下", tips: "动作强化" },
+      { text: "给", sentence: "给你", tips: "互动更自然" },
+      { text: "开", sentence: "开门", tips: "指实物更好" },
+      { text: "关", sentence: "关门", tips: "对比记忆" },
+      { text: "上", sentence: "上楼", tips: "动作理解" },
+      { text: "下", sentence: "下楼", tips: "配合动作" },
+    ],
+  },
+
   吃饭: {
-    icon: "🍽️",
+    icon: "🍚",
     words: [
-      { text: "吃", sentence: "你要吃吗？", tips: "吃饭时顺手指一下“吃”" },
-      { text: "喝", sentence: "我们来喝水。", tips: "喝水前说一次“喝”就够" },
-      { text: "水", sentence: "这是水。", tips: "杯子、水壶都可以顺手强化" },
-      { text: "饭", sentence: "我们吃饭啦。", tips: "盛饭时重复最自然" },
-      { text: "多", sentence: "这个多一点。", tips: "用两份食物对比多和少" },
-      { text: "少", sentence: "这个少一点。", tips: "和“多”成对出现更容易记" },
+      { text: "吃", sentence: "我们吃饭", tips: "每天都会用到" },
+      { text: "饭", sentence: "这是饭", tips: "指实物更好" },
+      { text: "水", sentence: "喝水", tips: "重复出现" },
+      { text: "拿", sentence: "拿勺子", tips: "动作+语言" },
+      { text: "给", sentence: "给你", tips: "简单互动" },
+      { text: "要", sentence: "你要吗", tips: "提问式更自然" },
+      { text: "多", sentence: "再来一点", tips: "不用纠结字义" },
+      { text: "少", sentence: "少一点", tips: "对比理解" },
     ],
   },
-  出门: {
-    icon: "🚗",
-    words: [
-      { text: "车", sentence: "我们上车啦。", tips: "出门高频字，很适合先学" },
-      { text: "门", sentence: "把门打开。", tips: "开门关门都是现成场景" },
-      { text: "开", sentence: "门开了。", tips: "动作和字一起说效果最好" },
-      { text: "走", sentence: "我们走吧。", tips: "每天都能重复" },
-      { text: "上", sentence: "上车啦。", tips: "和“下”一起学更自然" },
-      { text: "下", sentence: "我们下车。", tips: "下楼、下车都能用" },
-    ],
-  },
+
   恐龙: {
     icon: "🦖",
     words: [
-      { text: "龙", sentence: "这是一只大龙。", tips: "兴趣字优先，记得会很快" },
-      { text: "大", sentence: "这只恐龙好大。", tips: "和小恐龙做对比" },
-      { text: "小", sentence: "这只是小恐龙。", tips: "大小一起出现更容易懂" },
-      { text: "跑", sentence: "恐龙在跑。", tips: "可以配合动作表演" },
-      { text: "吃", sentence: "恐龙在吃东西。", tips: "兴趣字和生活字混搭" },
-      { text: "头", sentence: "这是恐龙的头。", tips: "身体部位最直观" },
+      { text: "跑", sentence: "恐龙在跑", tips: "用手指指字，不要求孩子读" },
+      { text: "吃", sentence: "恐龙在吃东西", tips: "配合动作更容易理解" },
+      { text: "大", sentence: "这个恐龙很大", tips: "用夸张语气增强记忆" },
+      { text: "小", sentence: "这个恐龙很小", tips: "对比更容易建立概念" },
+      { text: "来", sentence: "恐龙来了", tips: "重复出现就够了" },
+      { text: "走", sentence: "恐龙走了", tips: "不需要让孩子重复" },
+      { text: "看", sentence: "我们看恐龙", tips: "用生活语言就好" },
+      { text: "上", sentence: "恐龙上山了", tips: "结合画面理解" },
+      { text: "下", sentence: "恐龙下来了", tips: "用动作强化" },
+      { text: "叫", sentence: "恐龙在叫", tips: "可以模仿声音" },
     ],
   },
-  汽车: {
-    icon: "🚙",
+
+  火车: {
+    icon: "🚂",
     words: [
-      { text: "车", sentence: "这是一辆车。", tips: "孩子兴趣高，识字动力会更强" },
-      { text: "开", sentence: "汽车开走了。", tips: "推玩具车时说最自然" },
-      { text: "停", sentence: "汽车停下来啦。", tips: "和“开”形成反差" },
-      { text: "快", sentence: "这辆车跑得快。", tips: "快慢游戏很好用" },
-      { text: "慢", sentence: "这辆车开得慢。", tips: "让孩子自己做快慢对比" },
-      { text: "轮", sentence: "这是车轮。", tips: "指轮子的时候说“轮”" },
+      { text: "车", sentence: "火车来了", tips: "先建立“车”的概念" },
+      { text: "开", sentence: "火车开走了", tips: "用动态场景" },
+      { text: "来", sentence: "火车来了", tips: "重复高频词" },
+      { text: "走", sentence: "火车走了", tips: "形成对比" },
+      { text: "上", sentence: "我们上车", tips: "结合真实体验" },
+      { text: "下", sentence: "我们下车", tips: "生活中重复" },
+      { text: "站", sentence: "火车到站了", tips: "强调“站”这个字" },
+      { text: "门", sentence: "车门开了", tips: "指实物更好" },
+      { text: "坐", sentence: "我们坐火车", tips: "不用解释字义" },
+      { text: "看", sentence: "我们看火车", tips: "轻松表达就行" },
+      { text: "快", sentence: "火车很快", tips: "配合动作更好" },
+      { text: "停", sentence: "火车停了", tips: "简单重复" },
+    ],
+  },
+
+  飞机: {
+    icon: "✈️",
+    words: [
+      { text: "飞", sentence: "飞机在飞", tips: "核心字优先出现" },
+      { text: "上", sentence: "飞机飞上去了", tips: "配手势更好" },
+      { text: "下", sentence: "飞机下来了", tips: "重复建立理解" },
+      { text: "看", sentence: "我们看飞机", tips: "自然表达" },
+      { text: "云", sentence: "飞机在云里", tips: "结合画面理解" },
+      { text: "高", sentence: "飞机飞很高", tips: "用夸张语气" },
+      { text: "来", sentence: "飞机来了", tips: "简单重复" },
+      { text: "走", sentence: "飞机飞走了", tips: "形成对比" },
+      { text: "远", sentence: "飞机飞很远", tips: "不用解释抽象概念" },
+      { text: "起", sentence: "飞机起飞了", tips: "重点词可以多说几次" },
+      { text: "落", sentence: "飞机落地了", tips: "配合动作理解" },
+      { text: "坐", sentence: "我们坐飞机", tips: "结合真实经验" },
     ],
   },
 };
